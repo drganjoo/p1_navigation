@@ -114,7 +114,7 @@ class DDQNAgent(BaseAgent):
             self._soft_update(self.qlocal_network, self.qtarget_network, TAU)
 
     def _learn_from_replay(self):
-        print('\rlearn_from_replay', end='')
+        #print('\rlearn_from_replay', end='')
 
         indices_np, states_np, actions_np, rewards_np, next_states_np, dones_np, weights_np = self.replay_buffer.sample_batch()
 
