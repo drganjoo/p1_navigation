@@ -11,13 +11,13 @@ An Double Deep Q Learning Agent (DDQN Agent), with prrioritized replay buffer, h
 ## Goal of the project
 ![Trained Agent][image1]
 
-A reward of +1 is provided for collecting a yellow banana, and a reward of -1 is provided for collecting a blue banana.  Thus, the goal of the agent is to collect as many yellow bananas as possible while avoiding blue bananas.  
+A reward of +1 is provided for collecting a yellow banana, and a reward of -1 is provided for collecting a blue banana.  The goal of the agent is to collect as many yellow bananas as possible while avoiding blue bananas.  
 
 The task is episodic, and in order to solve the environment, the agent must get an average score of +13 over 100 consecutive episodes.
-## State Space
+### State Space
 The state space has 37 dimensions and contains the agent's velocity, along with ray-based perception of objects around agent's forward direction.  Given this information, the agent has to learn how to best select actions.  
 
-## Action Space
+### Action Space
 
 Four discrete actions are available, corresponding to:
 - **`0`** - move forward.
@@ -25,11 +25,20 @@ Four discrete actions are available, corresponding to:
 - **`2`** - turn left.
 - **`3`** - turn right.
 
-## Solution Provided
+## Solution
 
-### Double DQN Agent
+A **Double DQN** agent with **Prioritized Replay Buffer** is used for solving the problem.
 
-A DQN Agent uses two neural networks for training purposes. One is an online network and the other is a target network. The online network is used for selecting actions and is the one that is trained. Every N steps the online network is copied over to the target network. This solves the issue ''
+### Double DQN Agent Algorithm
+
+When a single neural network is used as the Q function approximator, reinforcement learning is known to be unstable or even diverge from the solution. One of the issues is that small update to the network may significantly change the policy, which will impact all future Q(S', A). The second is the strong correlation that exist between sequence of observations.
+
+To overcome the latter issue, DQN uses a replay buffer, in which the experience that the agent gather's from acting in the environment is stored as a tupe of (state, action, reward, next_state and dones). Each training step, the agent randomly samples a batch of k size from the replay buffer and uses that for training. Initially, the agent waits for the replay buffer to have N steps in it before it does any training.
+
+The other thing DQN Agent does is to use two similar shaped neural networks instead of one. One is called the Local (or online) network, represented by θ and the other is called Target network represented by θ′. Each time step, the agent uses the local network to choose an action, in a ϵ greedy fashion.
+
+One for online action selection / training and the other one as a target network against which the online network is trained. Every C steps the online network is copied over to the target network. A DQN Agent uses a replay buffer to overcome the correlation present in the sequence of observations. 
+
 
 The following algorithm is used for learning:
 
@@ -40,6 +49,16 @@ A Double DQN Agent, uses the online network to find the best action in `next_sta
 
 The agent used double DQN algorithm. The differen
 ### Network Architecture
+
+
+### Prioritized Replay Buffer
+
+[Paper Referencec]()
+
+### Hyper Parameters
+
+
+## Future Work
 
 ## Instructions on how to setup 
 ### Getting Started
