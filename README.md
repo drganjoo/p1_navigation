@@ -31,19 +31,22 @@ A **Double DQN** agent with **Prioritized Replay Buffer** is used for solving th
 
 ### Double DQN Agent Algorithm
 
-When a single neural network is used as the Q function approximator, reinforcement learning is known to be unstable or even diverge from the solution. One of the issues is that small update to the network may significantly change the policy, which will impact all future Q(S', A). The second is the strong correlation that exist between sequence of observations.
+When a single neural network is used as the Q function approximator, reinforcement learning is known to be unstable or even diverge from the solution. One of the issues is that a small update to the network (that may result from one back propogration cycle for an experience) may significantly change the policy, which will impact all future Q(S', A). The second is the strong correlation that exist between sequence of observations.
 
-To overcome the latter issue, DQN uses a replay buffer, in which the experience that the agent gather's from acting in the environment is stored as a tupe of (state, action, reward, next_state and dones). Each training step, the agent randomly samples a batch of k size from the replay buffer and uses that for training. Initially, the agent waits for the replay buffer to have N steps in it before it does any training.
+To overcome the latter issue, DQN uses a replay buffer, in which the experience that the agent gather's from acting in the environment is stored as a tupe of (state, action, reward, next_state and dones). Each training step, the agent randomly samples a batch of k size from the replay buffer and uses that for training. Initially, the agent waits for the replay buffer to have atleast N steps in it before it does any training.
 
-The other thing DQN Agent does is to use two similar shaped neural networks instead of one. One is called the Local (or online) network, represented by θ and the other is called Target network represented by θ′. Each time step, the agent uses the local network to choose an action, in a ϵ greedy fashion.
+For the update issue, the other thing DQN Agent does is to use two similar shaped neural networks instead of one. One is called the Local (or online) network, represented by θ and the other is called Target network represented by θ′. Each time step, the agent uses the local network to choose an action in a ϵ greedy fashion. From training perspective, the local network is trained and the target network is used for comparing the local network's output with the desired outcome. Every C steps the online network is copied over to the target network. The loss function used for training is:
 
-One for online action selection / training and the other one as a target network against which the online network is trained. Every C steps the online network is copied over to the target network. A DQN Agent uses a replay buffer to overcome the correlation present in the sequence of observations. 
+*Add image here for loss function*
+
+In essence, for finding out the value for the next state, V(S′):
+
+1. S′ is passed through the target Q network
+2. From the output of the network, the action that has the maximum value is picked and V(S′) = max action's value
+
+From there the loss function is computed and back propogated into the local network.
 
 
-The following algorithm is used for learning:
-
-1) 
-2) 
 
 A Double DQN Agent, uses the online network to find the best action in `next_state` but uses the value of that particular action from the target network.
 
