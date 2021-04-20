@@ -80,6 +80,16 @@ To choose an experience at random from the Sum Tree, a uniform random number is 
 5. If p is greater than the left node's value, subtract left node's value from p and go to the right node
 6. When a leaf node is reached, return that as the chosen experience
 
+[The test notebook]() proves that if sufficent large number of times the above steps are followed to choose numbers from a Sum Tree then the overall distribution of how many times a particular number was chosen would reflect its priority amongst all numbers added to the tree.
+
+### Double DQN with Prioritized Replay Buffer
+
+Some additional steps are required to be carried out for implementing Double DQN with Prioritized Replay Buffer. These steps include the following changes:
+
+1. 
+
+
+![Algo](https://raw.githubusercontent.com/drganjoo/p1_navigation/master/images/algo.PNG)
 
 
 The original paper is available at: [Prioritized Experience Replay
