@@ -37,8 +37,6 @@ To overcome the latter issue, DQN uses a replay buffer, in which the experience 
 
 For the update issue, the other thing DQN Agent does is to use two similar shaped neural networks instead of one. One is called the Local (or online) network, represented by θ and the other is called Target network represented by θ′. Each time step, the agent uses the local network to choose an action in a ϵ greedy fashion. From training perspective, the local network is trained and the target network is used for comparing the local network's output with the desired outcome. Every C steps the online network is copied over to the target network. The loss function used for training is:
 
-*Add image here for loss function*
-
 In essence, for finding out the value for the next state, V(S′):
 
 1. S′ is passed through the target Q network
@@ -60,6 +58,9 @@ Changes for DDQN:
 1. S′ is passed through the local network, index of the maximum action is found from the output
 2. S' is then passed through the target network and the value of the index found in step 1, is used to figure out Q(S′, a′)
 3. q = r + γ Q<sub>target</sub>(S′, max_arg Q<sub>local</sub>(S′))
+
+![DLossFunction](https://raw.githubusercontent.com/drganjoo/p1_navigation/master/images/ddqn-y.PNG)
+
 
 The original paper is available at: [Deep Reinforcement Learning with Double Q-learning](https://arxiv.org/abs/1509.06461)
 ### Prioritized Replay Buffer
