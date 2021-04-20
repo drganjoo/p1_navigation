@@ -29,7 +29,7 @@ Four discrete actions are available, corresponding to:
 
 A **Double DQN** agent with **Prioritized Replay Buffer** is used for solving the problem.
 
-### Double DQN Agent Algorithm
+### DQN Algorithm
 
 When a single neural network is used as the Q function approximator, reinforcement learning is known to be unstable or even diverge from the solution. One of the issues is that a small update to the network (that may result from one back propogration cycle for an experience) may significantly change the policy, which will impact all future Q(S', A). The second is the strong correlation that exist between sequence of observations.
 
@@ -42,15 +42,48 @@ For the update issue, the other thing DQN Agent does is to use two similar shape
 In essence, for finding out the value for the next state, V(S′):
 
 1. S′ is passed through the target Q network
-2. From the output of the network, the action that has the maximum value is picked and V(S′) = max action's value
+2. From the output of the network, the action that has the maximum value is picked and V(S′) is set to max action's value
+3. q = r + γ Q<sub>target</sub>(S′, max <sub>target</sub> a′)
+4. td_error is defined as q - Q<sub>local</sub>(S, a)
+5. loss function is defined as the mean of square of td_error
 
-From there the loss function is computed and back propogated into the local network.
+From there the loss function is computed and derivative of it is back propogated into the local network.
+
+![LossFunction](https://raw.githubusercontent.com/drganjoo/p1_navigation/master/images/dqn-loss-functions.PNG)
+
+### Double DQN (DDQN) Algorithm
+
+Since to choose an action in a given state, the agent uses the local network therefore the DDQN algorithm, uses the online network to find which action would be best to take in **S′ but then it uses the target network to find the value of the max action in S′**.
+
+Changes for DDQN:
+
+1. S′ is passed through the local network, index of the maximum action is found from the output
+2. S' is then passed through the target network and the value of the index found in step 1, is used to figure out Q(S′, a′)
+3. q = r + γ Q<sub>target</sub>(S′, max_arg Q<sub>local</sub>(S′))
+
+The original paper is available at: [Deep Reinforcement Learning with Double Q-learning](https://arxiv.org/abs/1509.06461)
+### Prioritized Replay Buffer
+
+The idea behind prioritized replay buffer is that some states have a much higher td_error and offer a greater opportunity for the agent to learn from them. However, using a normal stochastic replay buffer, there is no gaurantee that such high error states would be chosen often till the error in that state is reduced.
+
+Prioritized Replay Buffer gives a higher priority to a state of being chosen in a given minibatch by recording the td_error with each state and then using that as the priority at the time of choice. Since the learning and acting parts of the agent are separate, at the time the agent acts in the environment, it attaches the highest priority to the experience (state, action, reward, next_state, done) that resulted from the action and records it in the Prioritized Replay Buffer. This way it can gaurantee that each action will be chosen at least once in the learning stages.
+
+To record priorities and to assist in choosing experiences based on their priority a **Sum Tree** data structure has been implemented. A Sum Tree is a complete binary tree with the leaf nodes being the experiences that have been recorded  and the non-leaf nodes are the sum of priority (td_error) of each of the two children nodes. This way the root of the tree has the sum of all of the experiences that have been recorded in the Prioritized Replay Buffer.
+
+To choose an experience at random from the Sum Tree, a uniform random number is generated between the range 0 to Sum of Priorities (value of the root node of the tree). Then the tree is traversed using the following algorithm:
+
+1. Keep traversing the tree until a leaf node is reached
+2. Set p to the root node's value
+3. At each node compare p with the value of left child of the node.
+4. If p is less than the left node's value, go to the left child.
+5. If p is greater than the left node's value, subtract left node's value from p and go to the right node
+6. When a leaf node is reached, return that as the chosen experience
 
 
 
-A Double DQN Agent, uses the online network to find the best action in `next_state` but uses the value of that particular action from the target network.
+The original paper is available at: [Prioritized Experience Replay
+](https://arxiv.org/abs/1511.05952)
 
-The agent used double DQN algorithm. The differen
 ### Network Architecture
 
 
