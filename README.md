@@ -1,15 +1,15 @@
 [//]: # (Image References)
 
-[image1]: https://user-images.githubusercontent.com/10624937/42135619-d90f2f28-7d12-11e8-8823-82b970a54d7e.gif "Trained Agent"
+[demo]: (https://raw.githubusercontent.com/drganjoo/p1_navigation/master/images/demo.gif) "Trained Agent"
 
 # Project 1: Navigation
 
 ## Introduction
 
-An Double Deep Q Learning Agent (DDQN Agent), with prrioritized replay buffer, has been trained to navigate (and collect bananas!) in a large, square world.
+A Double Deep Q Learning Agent (DDQN Agent), with prrioritized replay buffer, has been trained to navigate (and collect bananas!) in a large, square world.
 
 ## Goal of the project
-![Trained Agent][image1]
+![Trained Agent][demo]
 
 A reward of +1 is provided for collecting a yellow banana, and a reward of -1 is provided for collecting a blue banana.  The goal of the agent is to collect as many yellow bananas as possible while avoiding blue bananas.  
 
@@ -103,12 +103,21 @@ Some additional steps are required to be carried out for implementing Double DQN
 ![Algo](https://raw.githubusercontent.com/drganjoo/p1_navigation/master/images/algo.PNG)
 
 
-The original paper is available at: [Prioritized Experience Replay
-](https://arxiv.org/abs/1511.05952)
+The original paper is available at: [Prioritized Experience Replay](https://arxiv.org/abs/1511.05952)
 
 ### Network Architecture
 
+The network consists of 2 Linear layers with Relu as the activation function:
 
+Sequential(    
+  (0): Linear(in_features=37, out_features=64, bias=True)    
+  (1): ReLU()    
+  (2): Linear(in_features=64, out_features=32, bias=True)    
+  (3): ReLU()    
+  (4): Linear(in_features=32, out_features=4, bias=True)    
+) 
+
+![Viz](https://raw.githubusercontent.com/drganjoo/p1_navigation/master/images/viz.PNG)
 
 ### Hyper Parameters
 
