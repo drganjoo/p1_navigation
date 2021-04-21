@@ -322,7 +322,7 @@ class ReplayBufferWithPriority(ReplayBuffer):
 
     # PaperCheck: why did their code have this?
     def _find_probabilities(self, indices) -> np.ndarray:
-        uniform_prob = 1. / len(indices)
+        uniform_prob = 1. / len(self)
         p_sum = self.sumtree.root
 
         if p_sum > 0:
@@ -341,7 +341,7 @@ class ReplayBufferWithPriority(ReplayBuffer):
 
     def _importance_sampling(self, indices):
         probabilities = self._find_probabilities(indices)
-        N = len(indices)
+        N = len(self)
         weights = (1. / (N * probabilities)) ** self.is_rate.get_current()
         weight_scaled = weights / np.max(weights)
         assert np.isfinite(weight_scaled).all(), 'Some of the weights are not finite any more'

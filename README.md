@@ -86,7 +86,16 @@ To choose an experience at random from the Sum Tree, a uniform random number is 
 
 Some additional steps are required to be carried out for implementing Double DQN with Prioritized Replay Buffer. These steps include the following changes:
 
-1. 
+. Loss function is to be multipled by importance sampling weights, which are defined by:
+
+1. k experiences are chosen from the Sum Tree
+
+2. A hyper parameter α is defined. P(J) is defined as each chosen experience's priority <sup>α</sup> / (sum of all chosen experiences's priority) <sup>α</sup>
+
+3. A hyper parameter β is defined and importance sample weights are compued as (1 / N * 1 / P(J))<sup>β</sup>
+
+4. Loss function is defined as the mean of (td_error * importance sampling weights)<sup>2</sup>.
+
 
 
 ![Algo](https://raw.githubusercontent.com/drganjoo/p1_navigation/master/images/algo.PNG)
