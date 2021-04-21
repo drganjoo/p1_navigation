@@ -1,7 +1,3 @@
-[//]: # (Image References)
-
-[demo]: (https://raw.githubusercontent.com/drganjoo/p1_navigation/master/images/demo.gif) "Trained Agent"
-
 # Project 1: Navigation
 
 ## Introduction
@@ -9,7 +5,8 @@
 A Double Deep Q Learning Agent (DDQN Agent), with prrioritized replay buffer, has been trained to navigate (and collect bananas!) in a large, square world.
 
 ## Goal of the project
-![Trained Agent][demo]
+
+![TrainedAgent](/assets/demo.gif)
 
 A reward of +1 is provided for collecting a yellow banana, and a reward of -1 is provided for collecting a blue banana.  The goal of the agent is to collect as many yellow bananas as possible while avoiding blue bananas.  
 
@@ -50,7 +47,7 @@ In essence, for finding out the value for the next state, V(S′):
 
 From there the loss function is computed and derivative of it is back propogated into the local network.
 
-![LossFunction](https://raw.githubusercontent.com/drganjoo/p1_navigation/master/images/dqn-loss-functions.PNG)
+![LossFunction](/assets/dqn-loss-functions.PNG)
 
 ### Double DQN (DDQN) Algorithm
 
@@ -62,7 +59,7 @@ Changes for DDQN:
 2. S' is then passed through the target network and the value of the index found in step 1, is used to figure out Q(S′, a′)
 3. q = r + γ Q<sub>target</sub>(S′, max_arg Q<sub>local</sub>(S′))
 
-![DLossFunction](https://raw.githubusercontent.com/drganjoo/p1_navigation/master/images/ddqn-y.PNG)
+![DLossFunction](/assets/ddqn-y.PNG)
 
 
 The original paper is available at: [Deep Reinforcement Learning with Double Q-learning](https://arxiv.org/abs/1509.06461)
@@ -85,7 +82,7 @@ To choose an experience at random from the Sum Tree, a uniform random number is 
 
 [The test notebook](test/test_sumtree.ipynb) proves that if sufficent large number of times the above steps are followed to choose numbers from a Sum Tree then the overall distribution of how many times a particular number was chosen would reflect its priority amongst all numbers added to the tree.
 
-![Weights](https://raw.githubusercontent.com/drganjoo/p1_navigation/master/images/weights.PNG)
+![Weights](/assets/weights.PNG)
 
 
 ### Double DQN with Prioritized Replay Buffer
@@ -103,7 +100,7 @@ Some additional steps are required to be carried out for implementing Double DQN
 4. Loss function is defined as the mean of (td_error * importance sampling weights)<sup>2</sup>.
 
 
-![Algo](https://raw.githubusercontent.com/drganjoo/p1_navigation/master/images/algo.PNG)
+![Algo](/assets/algo.PNG)
 
 
 The original paper is available at: [Prioritized Experience Replay](https://arxiv.org/abs/1511.05952)
@@ -120,7 +117,7 @@ Sequential(
   (4): Linear(in_features=32, out_features=4, bias=True)    
 ) 
 
-![Viz](https://raw.githubusercontent.com/drganjoo/p1_navigation/master/images/viz.PNG)
+![Viz](/assets/viz.PNG)
 
 ### Hyper Parameters
 
