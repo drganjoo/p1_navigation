@@ -29,6 +29,9 @@ Four discrete actions are available, corresponding to:
 
 A **Double DQN** agent with **Prioritized Replay Buffer** is used for solving the problem.
 
+**Saved Network Weights**: qnetwork.pt
+
+**Episodes Required**: Around 700 to 900 (multiple runs of the same code has results in different number of episodes)
 ### DQN Algorithm
 
 When a single neural network is used as the Q function approximator, reinforcement learning is known to be unstable or even diverge from the solution. One of the issues is that a small update to the network (that may result from one back propogration cycle for an experience) may significantly change the policy, which will impact all future Q(S', A). The second is the strong correlation that exist between sequence of observations.
