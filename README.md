@@ -67,9 +67,9 @@ The original paper is available at: [Deep Reinforcement Learning with Double Q-l
 
 The idea behind prioritized replay buffer is that some states have a much higher td_error and offer a greater opportunity for the agent to learn from them. However, using a normal stochastic replay buffer, there is no gaurantee that such high error states would be chosen often till the error in that state is reduced.
 
-Prioritized Replay Buffer gives a higher priority to a state of being chosen in a given minibatch by recording the td_error with each state and then using that as the priority at the time of choice. Since the learning and acting parts of the agent are separate, at the time the agent acts in the environment, it attaches the highest priority to the experience (state, action, reward, next_state, done) that resulted from the action and records it in the Prioritized Replay Buffer. This way it can gaurantee that each action will be chosen at least once in the learning stages.
+Prioritized Replay Buffer provides a higher chance to a state of being chosen in a given minibatch by recording the td_error with each state and then using that as the priority at the time of choice. Since the learning and acting parts of the agent are separate, at the time the agent acts in the environment, it attaches the highest priority to the experience (state, action, reward, next_state, done) that resulted from the action and records it in the Prioritized Replay Buffer. This way it can gaurantee that each action will be chosen at least once in the learning stages. Since the states that have higher td_error will be chosen more often the resulting neural network will overfit. In order to reduce the chances of overfitting, importance sampling rate (β) is used to reduce the weight updates. 
 
-To record priorities and to assist in choosing experiences based on their priority a **Sum Tree** data structure has been implemented. A Sum Tree is a complete binary tree with the leaf nodes being the experiences that have been recorded  and the non-leaf nodes are the sum of priority (td_error) of each of the two children nodes. This way the root of the tree has the sum of all of the experiences that have been recorded in the Prioritized Replay Buffer.
+To record priorities and to assist in choosing experiences based on their priority a **Sum Tree** data structure has been implemented. A Sum Tree is a complete binary tree with the leaf nodes being the experiences that have been recorded  and the non-leaf nodes are the sum of priority (td_error) of each of the two children nodes. This way the root of the tree has the sum of all of the experiences that have been recorded in the Prioritized Replay Buffer. The absolute value of the td_error is used as priority.
 
 To choose an experience at random from the Sum Tree, a uniform random number is generated between the range 0 to Sum of Priorities (value of the root node of the tree). Then the tree is traversed using the following algorithm:
 
@@ -82,17 +82,20 @@ To choose an experience at random from the Sum Tree, a uniform random number is 
 
 [The test notebook](test/test_sumtree.ipynb) proves that if sufficent large number of times the above steps are followed to choose numbers from a Sum Tree then the overall distribution of how many times a particular number was chosen would reflect its priority amongst all numbers added to the tree.
 
+![Weights](https://raw.githubusercontent.com/drganjoo/p1_navigation/master/images/weights.PNG)
+
+
 ### Double DQN with Prioritized Replay Buffer
 
 Some additional steps are required to be carried out for implementing Double DQN with Prioritized Replay Buffer. These steps include the following changes:
 
-. Loss function is to be multipled by importance sampling weights, which are defined by:
+. Loss function is to be multipled by importance sampling weights, which are defined using:
 
 1. k experiences are chosen from the Sum Tree
 
 2. A hyper parameter α is defined. P(J) is defined as each chosen experience's priority <sup>α</sup> / (sum of all chosen experiences's priority) <sup>α</sup>
 
-3. A hyper parameter β is defined and importance sample weights are compued as (1 / N * 1 / P(J))<sup>β</sup>
+3. A hyper parameter β is defined and importance sample weights are computed as (1 / N * 1 / P(J))<sup>β</sup>
 
 4. Loss function is defined as the mean of (td_error * importance sampling weights)<sup>2</sup>.
 
@@ -106,6 +109,7 @@ The original paper is available at: [Prioritized Experience Replay
 ### Network Architecture
 
 
+
 ### Hyper Parameters
 
 |Parameter|Value|Description|
@@ -116,13 +120,20 @@ The original paper is available at: [Prioritized Experience Replay
 |Optimizer Used|Adam||
 |LR (learning Rate)|0.0005|Adam optimizer learning rate|
 |Gamma|0.99|Discount rate for computing future rewards values|
-|Tau|0.001|
+|Tau|0.001|Weightage of copying online parameters to target. θ_target = τ*θ_local + (1 - τ)*θ_target |
+|ϵ|Annealed from 0.98 down to 0.01|Agent takes a random action ϵ greedy times. This helps in keeping a balance between exploitation and exploration. The annealing starts after 20,000 steps and ends at 100,000|
+|L steps|4|Every 4 steps the agent learns|
+|C steps|12|Every 12th step rates are copied from local to target|
+|α|0.6|Probablity factor used as exponent for priority given to each experience|
+|β|0.4 down to 1.0|Used in computing the importance-sampling rate. Starts annealing after 200,000 steps and ends at 50,000,000|
 
 ## Future Work
 
 1. The replay buffer uses round robin strategy for recording new experiences. It can be enhanced to replace the minimum priority experience each time a new one is to be recorded
 
 2. Duel DQN can be implemented
+
+3. What roles exactly are played by α and β are a little unclear and needs to be looked into.
 
 ## Instructions on how to setup 
 ### Getting Started
