@@ -142,7 +142,7 @@ Sequential(
 
 2. Duel DQN can be implemented
 
-3. What roles exactly are played by α and β are a little unclear and needs to be looked into.
+3. How does training change with different values of α and β is unclear and needs to be looked into.
 
 ## Instructions on how to setup 
 ### Getting Started
