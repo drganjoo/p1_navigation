@@ -80,7 +80,7 @@ To choose an experience at random from the Sum Tree, a uniform random number is 
 5. If p is greater than the left node's value, subtract left node's value from p and go to the right node
 6. When a leaf node is reached, return that as the chosen experience
 
-[The test notebook]() proves that if sufficent large number of times the above steps are followed to choose numbers from a Sum Tree then the overall distribution of how many times a particular number was chosen would reflect its priority amongst all numbers added to the tree.
+[The test notebook](test/test_sumtree.ipynb) proves that if sufficent large number of times the above steps are followed to choose numbers from a Sum Tree then the overall distribution of how many times a particular number was chosen would reflect its priority amongst all numbers added to the tree.
 
 ### Double DQN with Prioritized Replay Buffer
 
@@ -97,7 +97,6 @@ Some additional steps are required to be carried out for implementing Double DQN
 4. Loss function is defined as the mean of (td_error * importance sampling weights)<sup>2</sup>.
 
 
-
 ![Algo](https://raw.githubusercontent.com/drganjoo/p1_navigation/master/images/algo.PNG)
 
 
@@ -107,14 +106,23 @@ The original paper is available at: [Prioritized Experience Replay
 ### Network Architecture
 
 
-### Prioritized Replay Buffer
-
-[Paper Referencec]()
-
 ### Hyper Parameters
 
+|Parameter|Value|Description|
+|-|-|-|
+|Min Replay Buffer|10,000|Experiences are only recorded for at least these many steps|
+|Mini Batch Size|64|Each time learning is carried out these many experiences are taken from the replay buffer|
+|Total Buffer Size|100,000|These many experiences are always kept in the buffer|
+|Optimizer Used|Adam||
+|LR (learning Rate)|0.0005|Adam optimizer learning rate|
+|Gamma|0.99|Discount rate for computing future rewards values|
+|Tau|0.001|
 
 ## Future Work
+
+1. The replay buffer uses round robin strategy for recording new experiences. It can be enhanced to replace the minimum priority experience each time a new one is to be recorded
+
+2. Duel DQN can be implemented
 
 ## Instructions on how to setup 
 ### Getting Started
