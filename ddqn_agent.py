@@ -13,13 +13,13 @@ from model import QNetwork
 Action = int
 
 BUFFER_SIZE = int(1e5)
-BATCH_SIZE = 64
-LR = 5e-4
+BATCH_SIZE = 128
+LR = 1e-4
 GAMMA = 0.99
 TAU = 1e-3 
-EPS_START = 0.98
+EPS_START = 0.1
 EPS_END = 0.01
-EPS_DECAY_START = 20_000
+EPS_DECAY_START = 10_000
 EPS_DECAY_END = 1_00_000
 MIN_EXPERIENCE_BEFORE_LEARN = 10_000
 LEARN_EVERY_N_STEPS = 4
@@ -82,12 +82,13 @@ class DDQNAgent(BaseAgent):
             np.random.seed(seed)
 
     def _choose_best_action(self, state : np.ndarray) -> Action:
-        state = torch.from_numpy(state).float().unsqueeze(0).to(self.device)
+        state = torch.from_numpy(state).float().to(self.device)
         with torch.no_grad():
             self.qlocal_network.eval()
-            action_values = self.qlocal_network(state).to('cpu')
+            #action_values = self.qlocal_network(state).to('cpu')
+            max_a = self.qlocal_network(state).argmax()
             self.qlocal_network.train()
-        return int(np.argmax(action_values.numpy()))
+        return int(max_a)
 
     def act(self, state : np.ndarray) -> Action:
         if self.is_training and np.random.random() < self.eps.get_current():
