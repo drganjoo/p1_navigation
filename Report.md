@@ -142,6 +142,18 @@ Sequential(
 |α|0.6|Probablity factor used as exponent for priority given to each experience|
 |β|0.4 down to 1.0|Used in computing the importance-sampling rate. Starts annealing after 200,000 steps and ends at 50,000,000|
 
+
+## Training Plot
+
+The plot for the overll training is:
+
+![trainingplot](/assets/plot-overall.png)
+
+The plot for the last 100 episodes is:
+
+![trainingplot](/assets/plot-100.png)
+
+
 ## Future Work
 
 1. The replay buffer uses round robin strategy for recording new experiences. It can be enhanced to replace the minimum priority experience each time a new one is to be recorded
@@ -149,6 +161,8 @@ Sequential(
 2. Duel DQN can be implemented
 
 3. How does training change with different values of α and β is unclear and needs to be looked into.
+
+4. Try to solve the environment by using raw screen pixels.
 
 ## Instructions on how to setup 
 
